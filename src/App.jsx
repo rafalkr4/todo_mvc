@@ -6,7 +6,7 @@ function App() {
     const [tasks, setTasks] = useState([]);
 
 
-    function getId(){
+    function getId() {
         if (!tasks.length) return 1;
         return Math.max(...tasks.map((task) => task.id)) + 1
     }
@@ -27,18 +27,22 @@ function App() {
 
     }
 
-    function handleDelete(event) {
-        const id = parseInt(event.target.dataset.id);
-        const newTasks = tasks.filter((task) => task.id !== id);
-
-        setTasks(newTasks);
+    function handleDelete(taskToDelete) {
+        return () => {
+            const newTasks = tasks.filter((task) => task !== taskToDelete);
+            setTasks(newTasks);
+        }
     }
 
     function handleChangeStatus(task) {
-        return function() {
-            task.status = task.status === "active" ? "done" : "active";
+        return function () {
+            task.status = task.status === 'active' ? 'done' : 'active';
             setTasks([...tasks])
         }
+    }
+
+    function handleDeleteDoneTasks(){
+        setTasks(tasks.filter((task) => task.status !== 'done'));
     }
 
     return (
@@ -55,17 +59,22 @@ function App() {
                     <li key={task.id}>
                         <button
                             onClick={handleChangeStatus(task)}
-                            className={task.status === "active" ? "active" : "done"}
+                            className={task.status === 'active' ? 'active' : 'done'}
                         >{task.status}</button>
                         <span>{task.name}</span>
                         <button
-                            onClick={handleDelete}
-                            data-id={task.id}
+                            onClick={handleDelete(task)}
                         >delete
                         </button>
                     </li>
                 ))}
             </ul>
+
+            {tasks.some((task) => task.status === 'done') && (
+                <button
+                    onClick={handleDeleteDoneTasks}
+                >Clear completed</button>
+            )}
         </>
     )
 }

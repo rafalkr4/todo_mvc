@@ -34,21 +34,17 @@ li {
     align-items: center;
 }
 
-li span {
+li span{
     flex-grow: 4;
 }
 
-
-li button: last-child {
+li button:last-child {
     display: none;
-
 }
 
-li:hover button: last-child {
+li:hover button:last-child {
     display: inline-block;
-
 }
-
 
 button {
     cursor: pointer;
