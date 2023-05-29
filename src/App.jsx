@@ -1,4 +1,5 @@
 import {useState} from "react";
+import "./App.css";
 
 function App() {
     const [value, setValue] = useState('');
@@ -33,6 +34,13 @@ function App() {
         setTasks(newTasks);
     }
 
+    function handleChangeStatus(task) {
+        return function() {
+            task.status = task.status === "active" ? "done" : "active";
+            setTasks([...tasks])
+        }
+    }
+
     return (
         <>
             <h1>todos</h1>
@@ -45,6 +53,10 @@ function App() {
             <ul>
                 {tasks.map((task) => (
                     <li key={task.id}>
+                        <button
+                            onClick={handleChangeStatus(task)}
+                            className={task.status === "active" ? "active" : "done"}
+                        >{task.status}</button>
                         <span>{task.name}</span>
                         <button
                             onClick={handleDelete}
